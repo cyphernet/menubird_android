@@ -20,18 +20,21 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
 	protected static final String TAG = "MainActivity";
 	private Camera mCamera;
     private CameraPreview mPreview;
+    private MainActivity mainActivity;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		mainActivity=this;
 		// Create an instance of Camera
         mCamera = getCameraInstance();
 
@@ -85,10 +88,11 @@ public class MainActivity extends Activity {
 	    		     srcBmp.getHeight()
 	    		     );
 	    	
+	    	ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 	    	dstBmp.compress(Bitmap.CompressFormat.JPEG, 70, outStream);
 	    	
 	    	HttpClient httpClient = new DefaultHttpClient();
-	    	HttpPost httpPost = new HttpPost("http://www.yoursite.com/script.php");
+	    	HttpPost httpPost = new HttpPost("https://ziqi.brightideasandbox.com/api3/session");
 	    	
 	    	try {
 	            MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
@@ -97,7 +101,8 @@ public class MainActivity extends Activity {
 
 	            httpPost.setEntity(entity);
 
-	            HttpResponse response = httpClient.execute(httpPost, localContext);
+	            //HttpResponse response = httpClient.execute(httpPost, localContext);
+	            new HttpAsyncRequest(mainActivity).execute(httpPost); 
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	        }
