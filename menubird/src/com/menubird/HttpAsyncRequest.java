@@ -44,21 +44,19 @@ public class HttpAsyncRequest extends AsyncTask<HttpPost, HttpResponse, HttpResp
 	
 	protected void onPostExecute(HttpResponse result) {
         try {
-        	JSONObject obj = obj=new JSONObject(EntityUtils.toString(result.getEntity()));
+        	//JSONObject obj = obj=new JSONObject(EntityUtils.toString(result.getEntity()));
         	//process 
         	
-        	TextView resultView = (TextView)activityContext.findViewById(R.id.text_result);
-        	resultView.setText(obj.toString());
-        	
+        //	TextView resultView = (TextView)activityContext.findViewById(R.id.text_result);
+        	//resultView.setText(EntityUtils.toString(result.getEntity()));
+        	String resp = EntityUtils.toString(result.getEntity());
+        	this.activityContext.call_javascript("setText('"+resp+"')");
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
     }
 }
